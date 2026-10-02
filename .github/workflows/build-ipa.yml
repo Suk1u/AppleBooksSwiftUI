@@ -1,0 +1,66 @@
+name: Build Unsigned iOS IPA
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Unsigned IPA
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          echo "Available Xcode installations:"
+          ls -d /Applications/Xcode* || true
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          elif [ -d "/Applications/Xcode_15.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.app
+          fi
+          xcodebuild -version
+
+      - name: Build and Archive
+        run: |
+          set -e
+          xcodebuild clean -project AppleBooksClone.xcodeproj -scheme AppleBooksClone
+          xcodebuild -project AppleBooksClone.xcodeproj \
+            -scheme AppleBooksClone \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/AppleBooksClone.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            archive
+
+      - name: Package into IPA
+        run: |
+          set -e
+          echo "Locating AppleBooksClone.app..."
+          APP_PATH=$(find build -name "AppleBooksClone.app" -type d | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            echo "Error: AppleBooksClone.app not found!"
+            exit 1
+          fi
+          echo "Found app at $APP_PATH"
+          mkdir -p build/ipa_out/Payload
+          cp -R "$APP_PATH" build/ipa_out/Payload/
+          cd build/ipa_out
+          zip -qr AppleBooksClone.ipa Payload
+          ls -lh AppleBooksClone.ipa
+          echo "IPA packaging successful!"
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AppleBooksClone-Unsigned-IPA
+          path: build/ipa_out/AppleBooksClone.ipa
+          retention-days: 14
