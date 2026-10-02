@@ -1,5 +1,37 @@
 import SwiftUI
 
+// MARK: - App 导航 Tab 枚举定义
+
+public enum AppTab: Int, CaseIterable, Identifiable {
+    case home = 0       // 主页
+    case library = 1    // 书库
+    case store = 2      // 书店
+    case audiobooks = 3 // 有声书
+    case search = 4     // 搜索
+
+    public var id: Int { rawValue }
+
+    public var title: String {
+        switch self {
+        case .home: return "主页"
+        case .library: return "书库"
+        case .store: return "书店"
+        case .audiobooks: return "有声书"
+        case .search: return "搜索"
+        }
+    }
+
+    public var iconName: String {
+        switch self {
+        case .home: return "house.fill"
+        case .library: return "books.vertical.fill"
+        case .store: return "bag.fill"
+        case .audiobooks: return "headphones"
+        case .search: return "magnifyingglass"
+        }
+    }
+}
+
 // MARK: - 悬浮流体液态玻璃导航栏 (WWDC25 Native Liquid Glass Tab Bar)
 
 public struct LiquidGlassTabBar: View {

@@ -81,20 +81,18 @@ public extension View {
     /// WWDC25 原生 Liquid Glass 液态玻璃修饰符
     /// - Parameters:
     ///   - style: 玻璃样式，支持 .regular 与 .regular.interactive()
-    ///   - shape: 玻璃裁剪与边缘高光轮廓 Shape (如 RoundedRectangle, Capsule, Circle)
+    ///   - shape: 玻璃裁剪与边缘高光轮廓 InsettableShape (如 RoundedRectangle, Capsule, Circle)
     @ViewBuilder
-    func glassEffect<S: Shape>(_ style: GlassEffectStyle = .regular, in shape: S) -> some View {
+    func glassEffect<S: InsettableShape>(_ style: GlassEffectStyle = .regular, in shape: S) -> some View {
         if #available(iOS 26.0, *) {
             // 【iOS 26+ 原生 Liquid Glass 通道】
-            // 真实环境下由 Apple 系统私有着色器提供亚表面散射、折射倒角与靠近融合
             self
                 .background(
                     LiquidGlassLayer(style: style, shape: shape)
                 )
                 .clipShape(shape)
         } else {
-            // 【iOS 26 以下兜底降级】
-            // 采用超薄材质 (.ultraThinMaterial) + 镜面透镜边缘高光进行自适应兜底
+            // 【iOS 26 以下系统降级兜底】
             self
                 .background(
                     FallbackMaterialGlassLayer(style: style, shape: shape)
@@ -107,7 +105,7 @@ public extension View {
 // MARK: - 内部渲染层实现
 
 /// iOS 26+ 原生玻璃着色图层通道
-private struct LiquidGlassLayer<S: Shape>: View {
+private struct LiquidGlassLayer<S: InsettableShape>: View {
     let style: GlassEffectStyle
     let shape: S
     @State private var dragOffset: CGSize = .zero
@@ -157,7 +155,7 @@ private struct LiquidGlassLayer<S: Shape>: View {
 }
 
 /// iOS 26 以下普通超薄材质降级兜底图层
-private struct FallbackMaterialGlassLayer<S: Shape>: View {
+private struct FallbackMaterialGlassLayer<S: InsettableShape>: View {
     let style: GlassEffectStyle
     let shape: S
     @Environment(\.colorScheme) private var colorScheme
