@@ -2,93 +2,63 @@ import SwiftUI
 
 public struct LibraryView: View {
     @ObservedObject public var viewModel: BooksViewModel
+    @State private var showSortMenu: Bool = false
+    @State private var isSelectMode: Bool = false
 
     public var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // 分类胶囊标签栏
-                CategoryPillsView(selectedCategory: $viewModel.selectedCategory)
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
+            ZStack(alignment: .topTrailing) {
+                Color.black.ignoresSafeArea()
 
-                // 排序与视图切换控制条
-                HStack {
-                    Text("共 \(viewModel.filteredLibraryBooks.count) 本书")
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(.secondary)
+                VStack(spacing: 0) {
+                    // 顶部导航栏 (书库大标题 + 右侧两个液态玻璃圆形按钮)
+                    HStack(alignment: .center) {
+                        Text("书库")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundColor(.white)
 
-                    Spacer()
+                        Spacer()
 
-                    // 排序菜单
-                    Menu {
-                        ForEach(SortOption.allCases) { option in
+                        HStack(spacing: 12) {
+                            // 排序与视图模式液态玻璃圆形按钮 (对应视频中三条横线图标)
                             Button(action: {
-                                withAnimation { viewModel.selectedSort = option }
-                            }) {
-                                HStack {
-                                    Text(option.rawValue)
-                                    if viewModel.selectedSort == option {
-                                        Image(systemName: "checkmark")
-                                    }
+                                withAnimation(.spring(response: 0.36, dampingFraction: 0.74)) {
+                                    showSortMenu.toggle()
                                 }
+                            }) {
+                                Image(systemName: "line.3.horizontal")
+                                    .font(.system(size: 17, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .liquidGlassCircle(size: 38, specularOpacity: 0.45)
                             }
+                            .buttonStyle(.liquidSpring)
+
+                            // 更多选项液态玻璃圆形按钮
+                            Button(action: {
+                                withAnimation(.spring(response: 0.36, dampingFraction: 0.74)) {
+                                    showSortMenu.toggle()
+                                }
+                            }) {
+                                Image(systemName: "ellipsis")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.white)
+                                    .liquidGlassCircle(size: 38, specularOpacity: 0.45)
+                            }
+                            .buttonStyle(.liquidSpring)
                         }
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "arrow.up.arrow.down")
-                                .font(.system(size: 12))
-                            Text(viewModel.selectedSort.rawValue)
-                                .font(.system(size: 13, weight: .medium))
-                        }
-                        .foregroundColor(.primary)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(Color(.systemGray6))
-                        .clipShape(Capsule())
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+                    .padding(.bottom, 12)
 
-                    // 网格/列表切换按钮
-                    Button(action: {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            viewModel.viewMode = (viewModel.viewMode == .grid) ? .list : .grid
-                        }
-                    }) {
-                        Image(systemName: viewModel.viewMode == .grid ? "list.bullet" : "square.grid.2x2")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.primary)
-                            .frame(width: 32, height: 32)
-                            .background(Color(.systemGray6))
-                            .clipShape(Circle())
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-
-                Divider()
-
-                // 主内容区
-                ScrollView(.vertical, showsIndicators: true) {
-                    if viewModel.filteredLibraryBooks.isEmpty {
-                        VStack(spacing: 16) {
-                            Spacer().frame(height: 60)
-                            Image(systemName: "books.vertical")
-                                .font(.system(size: 52))
-                                .foregroundColor(.secondary.opacity(0.6))
-                            Text("未找到匹配的书籍")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(.secondary)
-                            Text("请尝试更换筛选分类或搜索其他关键词")
-                                .font(.system(size: 14))
-                                .foregroundColor(.secondary.opacity(0.8))
-                        }
-                        .padding(.top, 40)
-                    } else {
+                    // 图书列表 / 网格内容区
+                    ScrollView(.vertical, showsIndicators: false) {
                         Group {
                             if viewModel.viewMode == .grid {
                                 BookGridView(
                                     books: viewModel.filteredLibraryBooks,
                                     onSelect: { book in
-                                        viewModel.selectedDetailBook = book
+                                        viewModel.activeReadingBook = book
                                     },
                                     onRead: { book in
                                         viewModel.activeReadingBook = book
@@ -104,7 +74,7 @@ public struct LibraryView: View {
                                 BookListView(
                                     books: viewModel.filteredLibraryBooks,
                                     onSelect: { book in
-                                        viewModel.selectedDetailBook = book
+                                        viewModel.activeReadingBook = book
                                     },
                                     onRead: { book in
                                         viewModel.activeReadingBook = book
@@ -119,16 +89,40 @@ public struct LibraryView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
+                        .padding(.top, 10)
+                        .padding(.bottom, 100) // 避让底部悬浮玻璃 TabBar
                     }
                 }
+
+                // 点击外部半透明遮罩关闭弹窗
+                if showSortMenu {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                                showSortMenu = false
+                            }
+                        }
+
+                    // 悬浮液态玻璃弹出菜单 (完全对齐视频 frame_04.jpg)
+                    LiquidGlassMenuSheet(
+                        isPresented: $showSortMenu,
+                        viewMode: $viewModel.viewMode,
+                        selectedSort: $viewModel.selectedSort,
+                        onSelectMode: {
+                            isSelectMode.toggle()
+                        },
+                        onRemoveDownloads: {}
+                    )
+                    .padding(.top, 56)
+                    .padding(.trailing, 16)
+                    .transition(.asymmetric(
+                        insertion: .scale(scale: 0.9, anchor: .topTrailing).combined(with: .opacity),
+                        removal: .scale(scale: 0.9, anchor: .topTrailing).combined(with: .opacity)
+                    ))
+                }
             }
-            .navigationTitle("书库")
-            .searchable(
-                text: $viewModel.searchText,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "在书库中搜索书名、作者或简介"
-            )
+            .navigationBarHidden(true)
         }
     }
 }

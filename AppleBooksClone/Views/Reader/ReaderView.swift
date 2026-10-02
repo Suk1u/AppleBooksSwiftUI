@@ -10,17 +10,20 @@ public struct ReaderView: View {
     @State private var currentChapterIndex: Int = 0
     @State private var isChromeVisible: Bool = true
     @State private var isBookmarked: Bool = false
+    @State private var showReaderMenu: Bool = false
+    @State private var isOrientationLocked: Bool = false
 
     // 排版与主题设置
-    @State private var fontSize: CGFloat = 18
+    @State private var fontSize: CGFloat = 17
     @State private var fontDesign: Font.Design = .serif
-    @State private var selectedTheme: ReaderTheme = .sepia
+    @State private var selectedTheme: ReaderTheme = .dark
     @State private var isScrollMode: Bool = false
     @State private var brightness: Double = 1.0
 
-    // 弹窗状态
+    // 弹窗
     @State private var showSettingsSheet: Bool = false
     @State private var showTOCSheet: Bool = false
+    @State private var showSearchSheet: Bool = false
 
     public init(book: Book, viewModel: BooksViewModel) {
         self.book = book
@@ -40,46 +43,194 @@ public struct ReaderView: View {
         )
     }
 
+    private var remainingPagesInChapter: Int {
+        let ch = currentChapter
+        let endPage = ch.startPage + ch.pageCount - 1
+        return max(endPage - currentPage, 0)
+    }
+
     public var body: some View {
         ZStack {
-            // 背景底色
+            // 背景阅读主题底色
             selectedTheme.backgroundColor
                 .ignoresSafeArea()
 
-            // 亮度调节遮罩
+            // 亮度微调遮罩
             if brightness < 1.0 {
                 Color.black.opacity(1.0 - brightness)
                     .ignoresSafeArea()
                     .allowsHitTesting(false)
             }
 
-            // 正文阅读区域
-            VStack(spacing: 0) {
-                // 顶部状态留白（与隐藏控制条联动）
-                Spacer().frame(height: isChromeVisible ? 60 : 30)
+            // 正文区域
+            GeometryReader { proxy in
+                ZStack {
+                    VStack(alignment: .leading, spacing: 18) {
+                        Text(currentChapter.title)
+                            .font(.system(size: fontSize + 6, weight: .bold, design: fontDesign))
+                            .foregroundColor(selectedTheme.textColor)
+                            .padding(.top, isChromeVisible ? 64 : 20)
+                            .padding(.bottom, 4)
 
-                // 正文内容
-                if isScrollMode {
-                    scrollContent
-                } else {
-                    paginatedContent
+                        Text(currentChapter.content)
+                            .font(.system(size: fontSize, weight: .regular, design: fontDesign))
+                            .foregroundColor(selectedTheme.textColor)
+                            .lineSpacing(fontSize * 0.52)
+                            .multilineTextAlignment(.leading)
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 24)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+
+                    // 左右边缘手势翻页，中间呼出液态玻璃菜单
+                    HStack(spacing: 0) {
+                        Color.clear
+                            .frame(width: proxy.size.width * 0.25)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                previousPage()
+                            }
+
+                        Color.clear
+                            .frame(width: proxy.size.width * 0.50)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                                    if showReaderMenu {
+                                        showReaderMenu = false
+                                    } else {
+                                        isChromeVisible.toggle()
+                                    }
+                                }
+                            }
+
+                        Color.clear
+                            .frame(width: proxy.size.width * 0.25)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                nextPage()
+                            }
+                    }
                 }
-
-                // 底部状态留白
-                Spacer().frame(height: isChromeVisible ? 90 : 30)
+                .gesture(
+                    DragGesture(minimumDistance: 30)
+                        .onEnded { value in
+                            if value.translation.width < -30 {
+                                nextPage()
+                            } else if value.translation.width > 30 {
+                                previousPage()
+                            }
+                        }
+                )
             }
 
-            // 顶部悬浮控制栏
-            VStack {
-                if isChromeVisible {
-                    topNavigationBar
-                        .transition(.move(edge: .top).combined(with: .opacity))
+            // 右侧边缘垂直液态玻璃进度滑槽 (对应视频 frame_08, 09)
+            if isChromeVisible {
+                HStack {
+                    Spacer()
+                    VerticalPageScrubber(currentPage: $currentPage, totalPages: book.totalPages)
+                        .padding(.trailing, 10)
+                        .transition(.opacity)
                 }
-                Spacer()
-                if isChromeVisible {
-                    bottomNavigationBar
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+
+            // 顶部悬浮液态玻璃控件 (对应视频 frame_08, 10)
+            if isChromeVisible {
+                VStack {
+                    HStack {
+                        Spacer()
+
+                        // 顶部居中：本章剩余页码液态玻璃胶囊徽标
+                        Text(remainingPagesInChapter == 0 ? "本章最后一页" : "本章还剩 \(remainingPagesInChapter) 页")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.white.opacity(0.85))
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 6)
+                            .liquidGlassPill(cornerRadius: 16, specularOpacity: 0.35)
+
+                        Spacer()
+
+                        // 右上角：圆形液态玻璃关闭按钮 (X)
+                        Button(action: {
+                            viewModel.updateProgress(for: book.id, toPage: currentPage)
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.white)
+                                .liquidGlassCircle(size: 38, specularOpacity: 0.5)
+                        }
+                        .buttonStyle(.liquidSpring)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 14)
+
+                    Spacer()
                 }
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
+            // 底部悬浮液态玻璃控件 (对应视频 frame_08, 09, 10)
+            if isChromeVisible {
+                VStack {
+                    Spacer()
+
+                    // 右下角展开的液态玻璃阅读菜单面板
+                    if showReaderMenu {
+                        HStack {
+                            Spacer()
+                            LiquidGlassReaderMenu(
+                                isPresented: $showReaderMenu,
+                                onOpenTOC: { showTOCSheet = true },
+                                onOpenSearch: { showSearchSheet = true },
+                                onOpenSettings: { showSettingsSheet = true },
+                                onShare: {},
+                                onToggleLock: { isOrientationLocked.toggle() },
+                                onToggleMode: { isScrollMode.toggle() },
+                                onToggleBookmark: { isBookmarked.toggle() },
+                                isBookmarked: isBookmarked
+                            )
+                            .padding(.trailing, 20)
+                            .padding(.bottom, 60)
+                            .transition(.asymmetric(
+                                insertion: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity),
+                                removal: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity)
+                            ))
+                        }
+                    }
+
+                    // 底部常驻栏：页码胶囊 + 右下角悬浮圆形菜单按钮
+                    HStack(alignment: .center) {
+                        Spacer()
+
+                        // 底部居中：页码进度液态玻璃胶囊 (例: 16/255 页)
+                        Text("\(currentPage)/\(book.totalPages) 页")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundColor(.white.opacity(0.85))
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 6)
+                            .liquidGlassPill(cornerRadius: 16, specularOpacity: 0.35)
+
+                        Spacer()
+
+                        // 右下角：圆形液态玻璃菜单触发按钮
+                        Button(action: {
+                            withAnimation(.spring(response: 0.36, dampingFraction: 0.74)) {
+                                showReaderMenu.toggle()
+                            }
+                        }) {
+                            Image(systemName: "line.3.horizontal")
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(.white)
+                                .liquidGlassCircle(size: 42, specularOpacity: 0.5)
+                        }
+                        .buttonStyle(.liquidSpring)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 22)
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .statusBarHidden(!isChromeVisible)
@@ -106,227 +257,16 @@ public struct ReaderView: View {
             )
         }
         .onAppear {
-            determineInitialChapter()
+            updateChapterFromPage(currentPage)
         }
         .onDisappear {
-            // 退出阅读器时持久化当前进度
             viewModel.updateProgress(for: book.id, toPage: currentPage)
         }
     }
 
-    // 翻页模式正文
-    private var paginatedContent: some View {
-        GeometryReader { proxy in
-            ZStack {
-                VStack(alignment: .leading, spacing: 18) {
-                    Text(currentChapter.title)
-                        .font(.system(size: fontSize + 6, weight: .bold, design: fontDesign))
-                        .foregroundColor(selectedTheme.textColor)
-                        .padding(.bottom, 6)
-
-                    Text(currentChapter.content)
-                        .font(.system(size: fontSize, weight: .regular, design: fontDesign))
-                        .foregroundColor(selectedTheme.textColor)
-                        .lineSpacing(fontSize * 0.5)
-                        .multilineTextAlignment(.leading)
-
-                    Spacer()
-                }
-                .padding(.horizontal, 24)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .contentShape(Rectangle())
-
-                // 左右边缘点击翻页，中间点击呼出控制栏
-                HStack(spacing: 0) {
-                    Color.clear
-                        .frame(width: proxy.size.width * 0.25)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            previousPage()
-                        }
-
-                    Color.clear
-                        .frame(width: proxy.size.width * 0.50)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                isChromeVisible.toggle()
-                            }
-                        }
-
-                    Color.clear
-                        .frame(width: proxy.size.width * 0.25)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            nextPage()
-                        }
-                }
-            }
-            .gesture(
-                DragGesture(minimumDistance: 25)
-                    .onEnded { value in
-                        if value.translation.width < -30 {
-                            nextPage()
-                        } else if value.translation.width > 30 {
-                            previousPage()
-                        }
-                    }
-            )
-        }
-    }
-
-    // 上下滚动模式正文
-    private var scrollContent: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 22) {
-                ForEach(book.chapters) { chapter in
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text(chapter.title)
-                            .font(.system(size: fontSize + 6, weight: .bold, design: fontDesign))
-                            .foregroundColor(selectedTheme.textColor)
-                            .padding(.top, 16)
-
-                        Text(chapter.content)
-                            .font(.system(size: fontSize, weight: .regular, design: fontDesign))
-                            .foregroundColor(selectedTheme.textColor)
-                            .lineSpacing(fontSize * 0.5)
-
-                        Divider()
-                            .padding(.vertical, 16)
-                    }
-                }
-            }
-            .padding(.horizontal, 24)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    isChromeVisible.toggle()
-                }
-            }
-        }
-    }
-
-    // 顶部控制导航栏
-    private var topNavigationBar: some View {
-        HStack(spacing: 16) {
-            // 返回/关闭按钮
-            Button(action: {
-                viewModel.updateProgress(for: book.id, toPage: currentPage)
-                dismiss()
-            }) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(selectedTheme.textColor)
-                    .frame(width: 36, height: 36)
-                    .background(selectedTheme.chromeBackground)
-                    .clipShape(Circle())
-            }
-
-            Spacer()
-
-            // 章节标题
-            Text(currentChapter.title)
-                .font(.system(size: 14, weight: .medium, design: fontDesign))
-                .foregroundColor(selectedTheme.secondaryTextColor)
-                .lineLimit(1)
-
-            Spacer()
-
-            HStack(spacing: 12) {
-                // 目录按钮
-                Button(action: { showTOCSheet = true }) {
-                    Image(systemName: "list.bullet")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(selectedTheme.textColor)
-                        .frame(width: 36, height: 36)
-                        .background(selectedTheme.chromeBackground)
-                        .clipShape(Circle())
-                }
-
-                // 排版设置 Aa 按钮
-                Button(action: { showSettingsSheet = true }) {
-                    Image(systemName: "textformat.size")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(selectedTheme.textColor)
-                        .frame(width: 36, height: 36)
-                        .background(selectedTheme.chromeBackground)
-                        .clipShape(Circle())
-                }
-
-                // 书签按钮
-                Button(action: {
-                    withAnimation { isBookmarked.toggle() }
-                }) {
-                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(isBookmarked ? .orange : selectedTheme.textColor)
-                        .frame(width: 36, height: 36)
-                        .background(selectedTheme.chromeBackground)
-                        .clipShape(Circle())
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 8)
-        .background(selectedTheme.chromeBackground)
-        .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: 3)
-    }
-
-    // 底部控制导航栏
-    private var bottomNavigationBar: some View {
-        VStack(spacing: 8) {
-            // 滑动进度条
-            HStack(spacing: 12) {
-                Text("\(currentPage)")
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundColor(selectedTheme.secondaryTextColor)
-                    .frame(width: 30, alignment: .trailing)
-
-                Slider(
-                    value: Binding(
-                        get: { Double(currentPage) },
-                        set: { newPage in
-                            currentPage = Int(newPage)
-                            updateChapterFromPage(currentPage)
-                        }
-                    ),
-                    in: 1...Double(max(book.totalPages, 1)),
-                    step: 1
-                )
-                .tint(.orange)
-
-                Text("\(book.totalPages)")
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundColor(selectedTheme.secondaryTextColor)
-                    .frame(width: 30, alignment: .leading)
-            }
-            .padding(.horizontal, 20)
-
-            // 页码与进度说明
-            HStack {
-                let pct = Int((Double(currentPage) / Double(max(book.totalPages, 1))) * 100)
-                Text("已读 \(pct)% · 第 \(currentPage) 页 / 共 \(book.totalPages) 页")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundColor(selectedTheme.secondaryTextColor)
-
-                Spacer()
-
-                Text("本章约剩 6 分钟")
-                    .font(.system(size: 12, weight: .regular))
-                    .foregroundColor(selectedTheme.secondaryTextColor)
-            }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 12)
-        }
-        .padding(.top, 10)
-        .background(selectedTheme.chromeBackground)
-        .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: -3)
-    }
-
     private func nextPage() {
         if currentPage < book.totalPages {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation(.easeInOut(duration: 0.18)) {
                 currentPage += 1
                 updateChapterFromPage(currentPage)
             }
@@ -335,15 +275,11 @@ public struct ReaderView: View {
 
     private func previousPage() {
         if currentPage > 1 {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation(.easeInOut(duration: 0.18)) {
                 currentPage -= 1
                 updateChapterFromPage(currentPage)
             }
         }
-    }
-
-    private func determineInitialChapter() {
-        updateChapterFromPage(currentPage)
     }
 
     private func updateChapterFromPage(_ page: Int) {

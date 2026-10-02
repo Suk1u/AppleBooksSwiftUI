@@ -13,25 +13,30 @@
 		B000000000000000000000C /* Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000000C /* Chapter.swift */; };
 		B000000000000000000000D /* ReadingGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000000D /* ReadingGoal.swift */; };
 		B000000000000000000000E /* BooksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000000E /* BooksViewModel.swift */; };
-		B000000000000000000000F /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000000F /* Color+Hex.swift */; };
-		B0000000000000000000010 /* BookCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010 /* BookCoverView.swift */; };
-		B0000000000000000000011 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000011 /* CircularProgressView.swift */; };
-		B0000000000000000000012 /* ReadingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000012 /* ReadingProgressBar.swift */; };
-		B0000000000000000000013 /* ReadingGoalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000013 /* ReadingGoalCard.swift */; };
-		B0000000000000000000014 /* CurrentlyReadingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000014 /* CurrentlyReadingCard.swift */; };
-		B0000000000000000000015 /* HorizontalBookShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000015 /* HorizontalBookShelf.swift */; };
-		B0000000000000000000016 /* ReadingNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000016 /* ReadingNowView.swift */; };
-		B0000000000000000000017 /* CategoryPillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000017 /* CategoryPillsView.swift */; };
-		B0000000000000000000018 /* BookRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000018 /* BookRowView.swift */; };
-		B0000000000000000000019 /* BookGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000019 /* BookGridView.swift */; };
-		B000000000000000000001A /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001A /* BookListView.swift */; };
-		B000000000000000000001B /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001B /* LibraryView.swift */; };
-		B000000000000000000001C /* BookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001C /* BookDetailView.swift */; };
-		B000000000000000000001D /* ReaderThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001D /* ReaderThemes.swift */; };
-		B000000000000000000001E /* ReaderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001E /* ReaderSettingsView.swift */; };
-		B000000000000000000001F /* TableOfContentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001F /* TableOfContentsView.swift */; };
-		B0000000000000000000020 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000020 /* ReaderView.swift */; };
-		B0000000000000000000021 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000021 /* MainTabView.swift */; };
+		B000000000000000000000F /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000000F /* MainTabView.swift */; };
+		B0000000000000000000010 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000010 /* Color+Hex.swift */; };
+		B0000000000000000000011 /* BookCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000011 /* BookCoverView.swift */; };
+		B0000000000000000000012 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000012 /* CircularProgressView.swift */; };
+		B0000000000000000000013 /* ReadingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000013 /* ReadingProgressBar.swift */; };
+		B0000000000000000000014 /* LiquidGlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000014 /* LiquidGlassModifier.swift */; };
+		B0000000000000000000015 /* LiquidGlassTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000015 /* LiquidGlassTabBar.swift */; };
+		B0000000000000000000016 /* ReadingGoalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000016 /* ReadingGoalCard.swift */; };
+		B0000000000000000000017 /* CurrentlyReadingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000017 /* CurrentlyReadingCard.swift */; };
+		B0000000000000000000018 /* HorizontalBookShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000018 /* HorizontalBookShelf.swift */; };
+		B0000000000000000000019 /* ReadingNowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000019 /* ReadingNowView.swift */; };
+		B000000000000000000001A /* CategoryPillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001A /* CategoryPillsView.swift */; };
+		B000000000000000000001B /* BookRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001B /* BookRowView.swift */; };
+		B000000000000000000001C /* BookGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001C /* BookGridView.swift */; };
+		B000000000000000000001D /* BookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001D /* BookListView.swift */; };
+		B000000000000000000001E /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001E /* LibraryView.swift */; };
+		B000000000000000000001F /* LiquidGlassMenuSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000000000000000000001F /* LiquidGlassMenuSheet.swift */; };
+		B0000000000000000000020 /* BookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000020 /* BookDetailView.swift */; };
+		B0000000000000000000021 /* ReaderThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000021 /* ReaderThemes.swift */; };
+		B0000000000000000000022 /* ReaderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000022 /* ReaderSettingsView.swift */; };
+		B0000000000000000000023 /* TableOfContentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000023 /* TableOfContentsView.swift */; };
+		B0000000000000000000024 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000024 /* ReaderView.swift */; };
+		B0000000000000000000025 /* LiquidGlassReaderMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000025 /* LiquidGlassReaderMenu.swift */; };
+		B0000000000000000000026 /* VerticalPageScrubber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000026 /* VerticalPageScrubber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,25 +48,30 @@
 		A000000000000000000000C /* Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chapter.swift"; sourceTree = "<group>"; };
 		A000000000000000000000D /* ReadingGoal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingGoal.swift"; sourceTree = "<group>"; };
 		A000000000000000000000E /* BooksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BooksViewModel.swift"; sourceTree = "<group>"; };
-		A000000000000000000000F /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
-		A0000000000000000000010 /* BookCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookCoverView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000011 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CircularProgressView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000012 /* ReadingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingProgressBar.swift"; sourceTree = "<group>"; };
-		A0000000000000000000013 /* ReadingGoalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingGoalCard.swift"; sourceTree = "<group>"; };
-		A0000000000000000000014 /* CurrentlyReadingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentlyReadingCard.swift"; sourceTree = "<group>"; };
-		A0000000000000000000015 /* HorizontalBookShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HorizontalBookShelf.swift"; sourceTree = "<group>"; };
-		A0000000000000000000016 /* ReadingNowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingNowView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000017 /* CategoryPillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryPillsView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000018 /* BookRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookRowView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000019 /* BookGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookGridView.swift"; sourceTree = "<group>"; };
-		A000000000000000000001A /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookListView.swift"; sourceTree = "<group>"; };
-		A000000000000000000001B /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView.swift"; sourceTree = "<group>"; };
-		A000000000000000000001C /* BookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookDetailView.swift"; sourceTree = "<group>"; };
-		A000000000000000000001D /* ReaderThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderThemes.swift"; sourceTree = "<group>"; };
-		A000000000000000000001E /* ReaderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSettingsView.swift"; sourceTree = "<group>"; };
-		A000000000000000000001F /* TableOfContentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableOfContentsView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000020 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderView.swift"; sourceTree = "<group>"; };
-		A0000000000000000000021 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainTabView.swift"; sourceTree = "<group>"; };
+		A000000000000000000000F /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainTabView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000010 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		A0000000000000000000011 /* BookCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookCoverView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000012 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CircularProgressView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000013 /* ReadingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingProgressBar.swift"; sourceTree = "<group>"; };
+		A0000000000000000000014 /* LiquidGlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiquidGlassModifier.swift"; sourceTree = "<group>"; };
+		A0000000000000000000015 /* LiquidGlassTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiquidGlassTabBar.swift"; sourceTree = "<group>"; };
+		A0000000000000000000016 /* ReadingGoalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingGoalCard.swift"; sourceTree = "<group>"; };
+		A0000000000000000000017 /* CurrentlyReadingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentlyReadingCard.swift"; sourceTree = "<group>"; };
+		A0000000000000000000018 /* HorizontalBookShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HorizontalBookShelf.swift"; sourceTree = "<group>"; };
+		A0000000000000000000019 /* ReadingNowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReadingNowView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001A /* CategoryPillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryPillsView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001B /* BookRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookRowView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001C /* BookGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookGridView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001D /* BookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookListView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001E /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryView.swift"; sourceTree = "<group>"; };
+		A000000000000000000001F /* LiquidGlassMenuSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiquidGlassMenuSheet.swift"; sourceTree = "<group>"; };
+		A0000000000000000000020 /* BookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookDetailView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000021 /* ReaderThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderThemes.swift"; sourceTree = "<group>"; };
+		A0000000000000000000022 /* ReaderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSettingsView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000023 /* TableOfContentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableOfContentsView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000024 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderView.swift"; sourceTree = "<group>"; };
+		A0000000000000000000025 /* LiquidGlassReaderMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiquidGlassReaderMenu.swift"; sourceTree = "<group>"; };
+		A0000000000000000000026 /* VerticalPageScrubber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerticalPageScrubber.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +143,7 @@
 		C0000000000000000000007 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A0000000000000000000021 /* MainTabView.swift */,
+				A000000000000000000000F /* MainTabView.swift */,
 				C0000000000000000000008 /* Components */,
 				C0000000000000000000009 /* ReadingNow */,
 				C000000000000000000000A /* Library */,
@@ -146,10 +156,12 @@
 		C0000000000000000000008 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				A000000000000000000000F /* Color+Hex.swift */,
-				A0000000000000000000010 /* BookCoverView.swift */,
-				A0000000000000000000011 /* CircularProgressView.swift */,
-				A0000000000000000000012 /* ReadingProgressBar.swift */,
+				A0000000000000000000010 /* Color+Hex.swift */,
+				A0000000000000000000011 /* BookCoverView.swift */,
+				A0000000000000000000012 /* CircularProgressView.swift */,
+				A0000000000000000000013 /* ReadingProgressBar.swift */,
+				A0000000000000000000014 /* LiquidGlassModifier.swift */,
+				A0000000000000000000015 /* LiquidGlassTabBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -157,10 +169,10 @@
 		C0000000000000000000009 /* ReadingNow */ = {
 			isa = PBXGroup;
 			children = (
-				A0000000000000000000013 /* ReadingGoalCard.swift */,
-				A0000000000000000000014 /* CurrentlyReadingCard.swift */,
-				A0000000000000000000015 /* HorizontalBookShelf.swift */,
-				A0000000000000000000016 /* ReadingNowView.swift */,
+				A0000000000000000000016 /* ReadingGoalCard.swift */,
+				A0000000000000000000017 /* CurrentlyReadingCard.swift */,
+				A0000000000000000000018 /* HorizontalBookShelf.swift */,
+				A0000000000000000000019 /* ReadingNowView.swift */,
 			);
 			path = ReadingNow;
 			sourceTree = "<group>";
@@ -168,11 +180,12 @@
 		C000000000000000000000A /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				A0000000000000000000017 /* CategoryPillsView.swift */,
-				A0000000000000000000018 /* BookRowView.swift */,
-				A0000000000000000000019 /* BookGridView.swift */,
-				A000000000000000000001A /* BookListView.swift */,
-				A000000000000000000001B /* LibraryView.swift */,
+				A000000000000000000001A /* CategoryPillsView.swift */,
+				A000000000000000000001B /* BookRowView.swift */,
+				A000000000000000000001C /* BookGridView.swift */,
+				A000000000000000000001D /* BookListView.swift */,
+				A000000000000000000001E /* LibraryView.swift */,
+				A000000000000000000001F /* LiquidGlassMenuSheet.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -180,7 +193,7 @@
 		C000000000000000000000B /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				A000000000000000000001C /* BookDetailView.swift */,
+				A0000000000000000000020 /* BookDetailView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -188,10 +201,12 @@
 		C000000000000000000000C /* Reader */ = {
 			isa = PBXGroup;
 			children = (
-				A000000000000000000001D /* ReaderThemes.swift */,
-				A000000000000000000001E /* ReaderSettingsView.swift */,
-				A000000000000000000001F /* TableOfContentsView.swift */,
-				A0000000000000000000020 /* ReaderView.swift */,
+				A0000000000000000000021 /* ReaderThemes.swift */,
+				A0000000000000000000022 /* ReaderSettingsView.swift */,
+				A0000000000000000000023 /* TableOfContentsView.swift */,
+				A0000000000000000000024 /* ReaderView.swift */,
+				A0000000000000000000025 /* LiquidGlassReaderMenu.swift */,
+				A0000000000000000000026 /* VerticalPageScrubber.swift */,
 			);
 			path = Reader;
 			sourceTree = "<group>";
@@ -270,25 +285,30 @@
 				B000000000000000000000C /* Chapter.swift in Sources */,
 				B000000000000000000000D /* ReadingGoal.swift in Sources */,
 				B000000000000000000000E /* BooksViewModel.swift in Sources */,
-				B000000000000000000000F /* Color+Hex.swift in Sources */,
-				B0000000000000000000010 /* BookCoverView.swift in Sources */,
-				B0000000000000000000011 /* CircularProgressView.swift in Sources */,
-				B0000000000000000000012 /* ReadingProgressBar.swift in Sources */,
-				B0000000000000000000013 /* ReadingGoalCard.swift in Sources */,
-				B0000000000000000000014 /* CurrentlyReadingCard.swift in Sources */,
-				B0000000000000000000015 /* HorizontalBookShelf.swift in Sources */,
-				B0000000000000000000016 /* ReadingNowView.swift in Sources */,
-				B0000000000000000000017 /* CategoryPillsView.swift in Sources */,
-				B0000000000000000000018 /* BookRowView.swift in Sources */,
-				B0000000000000000000019 /* BookGridView.swift in Sources */,
-				B000000000000000000001A /* BookListView.swift in Sources */,
-				B000000000000000000001B /* LibraryView.swift in Sources */,
-				B000000000000000000001C /* BookDetailView.swift in Sources */,
-				B000000000000000000001D /* ReaderThemes.swift in Sources */,
-				B000000000000000000001E /* ReaderSettingsView.swift in Sources */,
-				B000000000000000000001F /* TableOfContentsView.swift in Sources */,
-				B0000000000000000000020 /* ReaderView.swift in Sources */,
-				B0000000000000000000021 /* MainTabView.swift in Sources */,
+				B000000000000000000000F /* MainTabView.swift in Sources */,
+				B0000000000000000000010 /* Color+Hex.swift in Sources */,
+				B0000000000000000000011 /* BookCoverView.swift in Sources */,
+				B0000000000000000000012 /* CircularProgressView.swift in Sources */,
+				B0000000000000000000013 /* ReadingProgressBar.swift in Sources */,
+				B0000000000000000000014 /* LiquidGlassModifier.swift in Sources */,
+				B0000000000000000000015 /* LiquidGlassTabBar.swift in Sources */,
+				B0000000000000000000016 /* ReadingGoalCard.swift in Sources */,
+				B0000000000000000000017 /* CurrentlyReadingCard.swift in Sources */,
+				B0000000000000000000018 /* HorizontalBookShelf.swift in Sources */,
+				B0000000000000000000019 /* ReadingNowView.swift in Sources */,
+				B000000000000000000001A /* CategoryPillsView.swift in Sources */,
+				B000000000000000000001B /* BookRowView.swift in Sources */,
+				B000000000000000000001C /* BookGridView.swift in Sources */,
+				B000000000000000000001D /* BookListView.swift in Sources */,
+				B000000000000000000001E /* LibraryView.swift in Sources */,
+				B000000000000000000001F /* LiquidGlassMenuSheet.swift in Sources */,
+				B0000000000000000000020 /* BookDetailView.swift in Sources */,
+				B0000000000000000000021 /* ReaderThemes.swift in Sources */,
+				B0000000000000000000022 /* ReaderSettingsView.swift in Sources */,
+				B0000000000000000000023 /* TableOfContentsView.swift in Sources */,
+				B0000000000000000000024 /* ReaderView.swift in Sources */,
+				B0000000000000000000025 /* LiquidGlassReaderMenu.swift in Sources */,
+				B0000000000000000000026 /* VerticalPageScrubber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

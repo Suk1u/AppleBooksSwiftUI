@@ -10,44 +10,46 @@ public struct ReaderSettingsView: View {
     public var body: some View {
         VStack(spacing: 20) {
             // 亮度调节滑块
-            HStack(spacing: 12) {
+            HStack(spacing: 14) {
                 Image(systemName: "sun.min")
                     .font(.system(size: 14))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white.opacity(0.6))
 
                 Slider(value: $brightness, in: 0.2...1.0)
-                    .tint(.orange)
+                    .tint(.cyan)
 
                 Image(systemName: "sun.max")
                     .font(.system(size: 18))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white.opacity(0.85))
             }
             .padding(.horizontal, 4)
 
-            Divider()
+            Divider().background(Color.white.opacity(0.12))
 
             // 字号调节 A- / A+
             HStack {
                 Text("字号")
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
 
                 Spacer()
 
                 HStack(spacing: 16) {
                     Button(action: {
-                        if fontSize > 14 { fontSize -= 2 }
+                        if fontSize > 13 { fontSize -= 2 }
                     }) {
                         Image(systemName: "textformat.size.smaller")
                             .font(.system(size: 15, weight: .bold))
-                            .frame(width: 38, height: 32)
-                            .background(Color(.systemGray6))
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .foregroundColor(.white)
+                            .frame(width: 40, height: 34)
+                            .background(Color.white.opacity(0.12))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
-                    .disabled(fontSize <= 14)
+                    .disabled(fontSize <= 13)
 
                     Text("\(Int(fontSize))")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundColor(.white)
                         .frame(width: 28)
 
                     Button(action: {
@@ -55,21 +57,22 @@ public struct ReaderSettingsView: View {
                     }) {
                         Image(systemName: "textformat.size.larger")
                             .font(.system(size: 18, weight: .bold))
-                            .frame(width: 38, height: 32)
-                            .background(Color(.systemGray6))
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .foregroundColor(.white)
+                            .frame(width: 40, height: 34)
+                            .background(Color.white.opacity(0.12))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                     .disabled(fontSize >= 28)
                 }
             }
 
-            Divider()
+            Divider().background(Color.white.opacity(0.12))
 
             // 字体样式切换
             HStack {
                 Text("字体风格")
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
 
                 Spacer()
 
@@ -79,13 +82,13 @@ public struct ReaderSettingsView: View {
                     Text("圆体").tag(Font.Design.rounded)
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 210)
+                .frame(width: 220)
             }
 
-            Divider()
+            Divider().background(Color.white.opacity(0.12))
 
             // 主题色板
-            HStack(spacing: 14) {
+            HStack(spacing: 16) {
                 ForEach(ReaderTheme.allCases) { theme in
                     Button(action: {
                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -98,7 +101,7 @@ public struct ReaderSettingsView: View {
                                 .frame(width: 44, height: 44)
                                 .overlay(
                                     Circle()
-                                        .stroke(Color.primary.opacity(0.15), lineWidth: 1)
+                                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
                                 )
 
                             Text("Aa")
@@ -107,8 +110,8 @@ public struct ReaderSettingsView: View {
 
                             if selectedTheme == theme {
                                 Circle()
-                                    .stroke(Color.orange, lineWidth: 2.5)
-                                    .frame(width: 50, height: 50)
+                                    .stroke(Color.cyan, lineWidth: 2.5)
+                                    .frame(width: 52, height: 52)
                             }
                         }
                     }
@@ -116,13 +119,13 @@ public struct ReaderSettingsView: View {
                 }
             }
 
-            Divider()
+            Divider().background(Color.white.opacity(0.12))
 
             // 翻页模式 / 滚动模式
             HStack {
                 Text("页面交互")
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
 
                 Spacer()
 
@@ -134,8 +137,14 @@ public struct ReaderSettingsView: View {
                 .frame(width: 180)
             }
         }
-        .padding(20)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .padding(22)
+        .background(
+            ZStack {
+                Color(white: 0.14)
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(.ultraThinMaterial)
+            }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }

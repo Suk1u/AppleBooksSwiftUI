@@ -8,103 +8,67 @@ public struct BookRowView: View {
     public var onToggleFinished: () -> Void
 
     public var body: some View {
-        Button(action: onSelect) {
+        Button(action: onRead) {
             HStack(spacing: 16) {
                 // 封面
-                BookCoverView(book: book, width: 60, height: 90, cornerRadius: 4)
+                BookCoverView(book: book, width: 62, height: 92, cornerRadius: 4)
 
-                // 中间信息
-                VStack(alignment: .leading, spacing: 6) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(book.title)
-                            .font(.system(size: 16, weight: .bold, design: .serif))
-                            .foregroundColor(.primary)
-                            .lineLimit(1)
+                // 中间标题与信息
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(book.title)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .lineLimit(2)
 
-                        Text(book.author)
-                            .font(.system(size: 13, weight: .regular))
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                    }
+                    Text(book.author)
+                        .font(.system(size: 13, weight: .regular))
+                        .foregroundColor(.white.opacity(0.6))
+                        .lineLimit(1)
 
-                    HStack(spacing: 8) {
-                        Text(book.category.rawValue)
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(.secondary)
+                    if book.currentPage == 0 {
+                        Text("新增")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(.white)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color(.systemGray5))
+                            .background(Color.blue)
                             .clipShape(Capsule())
-
-                        if book.isWantToRead {
-                            HStack(spacing: 2) {
-                                Image(systemName: "bookmark.fill")
-                                    .font(.system(size: 10))
-                                Text("欲读")
-                                    .font(.system(size: 11, weight: .medium))
-                            }
-                            .foregroundColor(.orange)
-                        }
-                    }
-
-                    // 进度
-                    if book.isFinished {
-                        Text("已读完 ✓")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.green)
-                    } else if book.currentPage > 0 {
-                        HStack(spacing: 8) {
-                            ReadingProgressBar(
-                                progress: book.progressPercentage,
-                                height: 4,
-                                foregroundColor: .orange
-                            )
-                            .frame(width: 80)
-
-                            Text("\(Int(book.progressPercentage * 100))%")
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                .foregroundColor(.orange)
-                        }
                     } else {
-                        Text("未开始阅读")
+                        Text("\(max(1, Int(book.progressPercentage * 100)))%")
                             .font(.system(size: 12, weight: .regular))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.white.opacity(0.6))
                     }
                 }
 
                 Spacer()
 
-                // 阅读操作按钮
-                Button(action: onRead) {
-                    Image(systemName: "book.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(.orange)
+                // 右侧云朵图标与更多菜单
+                HStack(spacing: 16) {
+                    Image(systemName: "icloud.and.arrow.down")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.6))
+
+                    Menu {
+                        Button(action: onRead) {
+                            Label("阅读", systemImage: "book")
+                        }
+                        Button(action: onToggleWantToRead) {
+                            Label(book.isWantToRead ? "从欲读清单移除" : "加入欲读清单", systemImage: "bookmark")
+                        }
+                        Button(action: onToggleFinished) {
+                            Label(book.isFinished ? "标记为未读完" : "标记为已读完", systemImage: "checkmark.circle")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.6))
+                            .frame(width: 28, height: 28)
+                    }
                 }
-                .buttonStyle(.plain)
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, 6)
             .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
-        .contextMenu {
-            Button(action: onRead) {
-                Label("开始阅读", systemImage: "book")
-            }
-            Button(action: onSelect) {
-                Label("查看详情", systemImage: "info.circle")
-            }
-            Button(action: onToggleWantToRead) {
-                Label(
-                    book.isWantToRead ? "从欲读清单移除" : "加入欲读清单",
-                    systemImage: book.isWantToRead ? "bookmark.slash" : "bookmark"
-                )
-            }
-            Button(action: onToggleFinished) {
-                Label(
-                    book.isFinished ? "标记为未读完" : "标记为已读完",
-                    systemImage: book.isFinished ? "xmark.circle" : "checkmark.circle"
-                )
-            }
-        }
+        .buttonStyle(.liquidSpring)
     }
 }

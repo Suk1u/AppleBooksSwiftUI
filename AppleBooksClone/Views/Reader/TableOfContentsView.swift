@@ -8,33 +8,56 @@ public struct TableOfContentsView: View {
 
     public var body: some View {
         NavigationStack {
-            List {
-                Section(header: Text("全书目录 · 共 \(chapters.count) 章")) {
-                    ForEach(Array(chapters.enumerated()), id: \.offset) { index, chapter in
-                        Button(action: {
-                            onSelectChapter(index)
-                            dismiss()
-                        }) {
-                            HStack {
-                                Text(chapter.title)
-                                    .font(.system(size: 16, weight: index == currentChapterIndex ? .bold : .regular))
-                                    .foregroundColor(index == currentChapterIndex ? .orange : .primary)
+            ZStack {
+                Color.black.ignoresSafeArea()
 
-                                Spacer()
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 14) {
+                        Text("全书目录 · 共 \(chapters.count) 章")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
 
-                                Text("第 \(chapter.startPage) 页")
-                                    .font(.system(size: 14, design: .rounded))
-                                    .foregroundColor(.secondary)
+                        VStack(spacing: 0) {
+                            ForEach(Array(chapters.enumerated()), id: \.offset) { index, chapter in
+                                Button(action: {
+                                    onSelectChapter(index)
+                                    dismiss()
+                                }) {
+                                    HStack {
+                                        Text(chapter.title)
+                                            .font(.system(size: 16, weight: index == currentChapterIndex ? .bold : .regular))
+                                            .foregroundColor(index == currentChapterIndex ? .cyan : .white)
 
-                                if index == currentChapterIndex {
-                                    Image(systemName: "bookmark.fill")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.orange)
-                                        .padding(.leading, 4)
+                                        Spacer()
+
+                                        Text("第 \(chapter.startPage) 页")
+                                            .font(.system(size: 14, design: .rounded))
+                                            .foregroundColor(.white.opacity(0.5))
+
+                                        if index == currentChapterIndex {
+                                            Image(systemName: "bookmark.fill")
+                                                .font(.system(size: 13))
+                                                .foregroundColor(.cyan)
+                                                .padding(.leading, 6)
+                                        }
+                                    }
+                                    .padding(.vertical, 14)
+                                    .padding(.horizontal, 18)
+                                    .contentShape(Rectangle())
+                                }
+                                .buttonStyle(.plain)
+
+                                if index < chapters.count - 1 {
+                                    Divider()
+                                        .background(Color.white.opacity(0.1))
+                                        .padding(.leading, 18)
                                 }
                             }
-                            .padding(.vertical, 6)
                         }
+                        .liquidGlassCard(cornerRadius: 18, specularOpacity: 0.35)
+                        .padding(.horizontal, 20)
                     }
                 }
             }
@@ -42,11 +65,12 @@ public struct TableOfContentsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("关闭") {
-                        dismiss()
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.white)
+                            .liquidGlassCircle(size: 32, specularOpacity: 0.45)
                     }
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.orange)
                 }
             }
         }

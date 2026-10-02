@@ -1,46 +1,32 @@
-# Apple Books SwiftUI Replica (图书应用精选复刻)
+# Apple Books iOS 26+ Liquid Glass Edition (液态玻璃精选复刻)
 
-本项目使用 **SwiftUI** 纯原生实现，尽可能完整地复刻了 iOS 原生“图书”（Apple Books）应用的核心视觉风格与交互体验。
+本项目使用 **SwiftUI** 纯原生实现，严格对照实机录屏全面升级为 **iOS 26+ 液态玻璃（Liquid Glass）设计语言**，完整复刻了 Apple Books（图书）应用的核心界面、流体材质与沉浸式交互动效。
 
 ---
 
-## 📱 核心功能特性
+## 💎 iOS 26+ 液态玻璃（Liquid Glass）视觉体系与特色
 
-### 1. “阅读中”（Reading Now）板块
-- **每日阅读目标环形进度**：还原 Apple 经典的同心圆目标进度环，展示今日阅读分钟数、目标差距与连续达成天数（火焰徽章）。
-- **当前阅读专区（Currently Reading）**：以精致拟真封面卡片展示正在阅读的书籍、实时进度条、百分比与页码，并支持一键“继续阅读”。
-- **欲读清单与已读完书架**：横向流动书架，展示稍后读与已读完书籍。
-
-### 2. “书库”（Library）板块
-- **多维度标签筛选**：支持“全部”、“正在阅读”、“欲读清单”、“已读完”、“文学小说”、“科幻小说”、“商业与思维”、“社科哲学”等快速胶囊标签切换。
-- **视图模式无缝切换**：支持 **网格模式（Grid View）** 与 **列表模式（List View）** 切换。
-- **高拟真书籍封面**：还原真实图书光影细节（左侧书脊压痕阴影、微光漫反射高光、右侧微圆角与景深阴影）。
-- **实时搜索与动态排序**：支持实时过滤书名、作者与简介内容；支持按“最近阅读”、“按书名”、“按作者”、“按阅读进度”排序。
-- **长按上下文菜单（Context Menu）**：支持快速进入阅读、查看详情、切换欲读状态或标记已读完。
-
-### 3. 书籍详情页（Book Detail View）
-- 顶部沉浸式书籍封面大图，搭配多星级评分与读者评价数。
-- 快捷操作按钮：“继续阅读 / 开始阅读”、“欲读清单”、“标为已读”。
-- 关键规格参数条（总页数、分类标签、预计阅读用时）。
-- 可展开/收起的内容简介文本。
-- 完整章节目录速览。
-
-### 4. 全屏沉浸式阅读界面（Reader View）
-- **沉浸交互**：轻点正文中央区域，平滑呼出/隐藏顶部与底部导航栏。
-- **双排版交互模式**：
-  - **翻页模式（Paginated）**：点击屏幕左侧 25% 翻上一页，点击右侧 25% 翻下一页，同时支持左右滑动转场。
-  - **上下滚动模式（Continuous Scroll）**：支持传统流畅流式长文滚动。
-- **主题色板系统（“Aa”设置）**：
-  - **纯白（Original White）**：通透高对比度。
-  - **羊皮纸（Warm Sepia）**：温润护眼暖黄，阅读经典文学的绝佳搭配。
-  - **水墨灰（Paper Gray）**：低饱和度柔和灰色。
-  - **暗夜黑（Dark Night）**：极致纯黑深色模式。
-- **字体与版式自由微调**：
-  - 支持字号动态步进（14pt - 28pt）。
-  - 支持衬线宋体（Serif）、系统黑体（Sans-Serif）、圆体（Rounded）自由切换。
-  - 屏幕亮度快捷滑块模拟。
-- **实时进度与目录跳转**：底部滑动进度条可拖拽跨页跳转；内置全书章节目录抽屉，点击章节即刻定位。
-- **数据持久化与用时回写**：退出阅读器时自动计算用时累加到今日目标，并持久化当前阅读页码与进度。
+1. **流体多层毛玻璃材质（Multi-layer Liquid Glass Surface）**：
+   - 底层采用 `.ultraThinMaterial` 实现动态光学折射与背景穿透模糊；
+   - 叠合微光色散渐变与半透明深空微光滤层，营造透亮、纯净的流体质感。
+2. **镜面高光倒角棱线（Specular Highlight Caustics Border）**：
+   - 针对所有卡片、胶囊与圆形控件定制多段斜向线性高光描边（左上 50% 纯白反光至右下柔和过渡），模拟现实物理玻璃微曲面的反光倒角效果。
+3. **悬浮胶囊底栏与流体气泡（Liquid Floating Tab Bar）**：
+   - 彻底重构原生 TabView，采用底部悬浮的流体液态玻璃胶囊 Bar；
+   - 5 大导航标签：`主页`、`书库`、`书店`、`有声书`、`搜索`；
+   - 选中项具备 `matchedGeometryEffect` 流体气泡滑移高光，伴随弹性阻尼过渡。
+4. **悬浮液态玻璃弹出菜单（Liquid Glass Floating Menu Sheet）**：
+   - 书库右上角轻触圆形玻璃按钮即可呼出浮动液态玻璃面板：
+     - `选择`（带有对勾圆环）
+     - 视图切换：`网格` / `列表`
+     - 排序方式：`最近阅读` / `书名` / `作者` / `手动`
+     - 功能操作：`移除下载`（垃圾桶图标与右箭头）
+5. **沉浸式阅读器液态玻璃控制组（Liquid Glass Reader Controls）**：
+   - **右上角**：圆形液态玻璃关闭按钮（`xmark`）；
+   - **顶部居中**：悬浮液态玻璃药丸徽标（“本章还剩 3 页” / “本章最后一页”）；
+   - **底部居中**：悬浮液态玻璃页码胶囊（“16/255 页”）；
+   - **右侧边缘**：竖向流体玻璃进度滑槽（`VerticalPageScrubber`），可随手势实时滑动物理搜页；
+   - **右下角**：圆形流体玻璃气泡按钮，轻触即刻以弹性动画展开多功能控制面板（包含 `目录`、`在图书中搜索`、`主题与设置 大小`，以及底栏四个快捷玻璃方块：分享、旋转锁、翻页模式、书签）。
 
 ---
 
@@ -49,86 +35,62 @@
 ```
 AppleBooksClone/
 ├── AppleBooksClone.xcodeproj/          # 完整 Xcode 工程配置文件
-│   ├── project.pbxproj
+│   ├── project.pbxproj                 # 包含全部 29 个源码引用的 PBX 配置文件
 │   └── xcshareddata/xcschemes/
-│       └── AppleBooksClone.xcscheme    # 共享 Scheme（CI 自动化构建必需）
+│       └── AppleBooksClone.xcscheme    # CI/CD 共享自动化 Scheme
 ├── AppleBooksClone/
 │   ├── App/
 │   │   ├── AppleBooksApp.swift         # App 启动入口
-│   │   └── Info.plist                  # 应用配置清单
+│   │   └── Info.plist                  # 应用信息配置清单
 │   ├── Models/
-│   │   ├── Book.swift                  # 图书模型、分类枚举、排序选项、封面主题
-│   │   ├── Chapter.swift               # 章节与正文内容模型
-│   │   └── ReadingGoal.swift           # 每日阅读目标与连胜数据模型
+│   │   ├── Book.swift                  # 图书模型、分类、排序模式、封面样式
+│   │   ├── Chapter.swift               # 章节正文数据模型
+│   │   └── ReadingGoal.swift           # 每日阅读打卡与连续天数
 │   ├── ViewModels/
-│   │   └── BooksViewModel.swift        # 全局响应式状态管理（图书库、过滤排序、阅读进度管理）
+│   │   └── BooksViewModel.swift        # 全局状态管理（筛选过滤、阅读时长回写、页码持久化）
 │   ├── Views/
-│   │   ├── MainTabView.swift           # 根 TabView 视图
+│   │   ├── MainTabView.swift           # 根视图，承载全屏悬浮 LiquidGlassTabBar
+│   │   ├── Components/
+│   │   │   ├── LiquidGlassModifier.swift # 液态玻璃材质修饰符、高光边框、按压微动效
+│   │   │   ├── LiquidGlassTabBar.swift   # 底部悬浮流体液态玻璃 5-Tab 胶囊栏
+│   │   │   ├── BookCoverView.swift       # 3D 光影真实书脊封面
+│   │   │   ├── CircularProgressView.swift# 环形流体进度条
+│   │   │   ├── ReadingProgressBar.swift  # 胶囊平滑阅读进度条
+│   │   │   └── Color+Hex.swift           # 十六进制颜色转换
 │   │   ├── ReadingNow/
-│   │   │   ├── ReadingNowView.swift    # “阅读中”主界面
-│   │   │   ├── ReadingGoalCard.swift   # 每日阅读目标环形进度卡片
-│   │   │   ├── CurrentlyReadingCard.swift # 正在阅读 Hero 封面卡片
-│   │   │   └── HorizontalBookShelf.swift  # 横向滑动图书展架
+│   │   │   ├── ReadingNowView.swift      # “主页”视图：探索书店玻璃胶囊、一周打卡打勾圆环、今年读过的图书、正在阅读
+│   │   │   ├── CurrentlyReadingCard.swift# 正在阅读液态玻璃卡片
+│   │   │   ├── HorizontalBookShelf.swift # 横向流动图书展架
+│   │   │   └── ReadingGoalCard.swift     # 阅读目标环形卡片
 │   │   ├── Library/
-│   │   │   ├── LibraryView.swift       # “书库”主界面（包含搜索、排序与视图切换）
-│   │   │   ├── BookGridView.swift      # 网格排布展示视图
-│   │   │   ├── BookListView.swift      # 列表排布展示视图
-│   │   │   ├── BookRowView.swift       # 列表单行图书组件
-│   │   │   └── CategoryPillsView.swift # 水平滑动胶囊分类筛选器
+│   │   │   ├── LibraryView.swift         # “书库”主界面：书库大标题、圆形玻璃按钮、弹窗菜单
+│   │   │   ├── LiquidGlassMenuSheet.swift# 书库浮动液态玻璃操作菜单
+│   │   │   ├── BookGridView.swift        # 2列网格（含“新增”蓝标、百分比、云朵下载与更多）
+│   │   │   ├── BookListView.swift        # 列表视图
+│   │   │   ├── BookRowView.swift         # 列表项单行组件
+│   │   │   └── CategoryPillsView.swift   # 胶囊分类筛选器
 │   │   ├── Detail/
-│   │   │   └── BookDetailView.swift    # 书籍详情页 Sheet
-│   │   ├── Reader/
-│   │   │   ├── ReaderView.swift        # 全屏沉浸式图书阅读界面
-│   │   │   ├── ReaderSettingsView.swift# “Aa”排版与主题设置弹窗
-│   │   │   ├── TableOfContentsView.swift # 章节目录抽屉
-│   │   │   └── ReaderThemes.swift      # 四套阅读背景与文字主题规范
-│   │   └── Components/
-│   │       ├── BookCoverView.swift     # 3D 光影质感拟真书籍封面组件
-│   │       ├── CircularProgressView.swift # 环形进度条组件
-│   │       ├── ReadingProgressBar.swift  # 胶囊式平滑进度条
-│   │       └── Color+Hex.swift         # 十六进制颜色解析拓展
-│   └── Assets.xcassets/                # 图标与全局主题色彩资源资产
+│   │   │   └── BookDetailView.swift      # 图书详情页液态玻璃 Sheet
+│   │   └── Reader/
+│   │       ├── ReaderView.swift          # 全屏液态玻璃阅读器
+│   │       ├── LiquidGlassReaderMenu.swift # 右下角展开的液态玻璃阅读菜单
+│   │       ├── VerticalPageScrubber.swift  # 右侧边缘竖向液态玻璃进度滑杆
+│   │       ├── ReaderSettingsView.swift  # “Aa”排版与主题设置面板
+│   │       ├── TableOfContentsView.swift # 目录抽屉
+│   │       └── ReaderThemes.swift        # 阅读主题配色
+│   └── Assets.xcassets/
 ├── .github/
 │   └── workflows/
-│       └── build-ipa.yml               # GitHub Actions 自动化打包免签名 IPA 工作流
+│       └── build-ipa.yml                 # GitHub Actions 自动化打包免签名 IPA 流程
 └── README.md
 ```
 
 ---
 
-## 💡 关键交互与核心实现思路
+## 🚀 GitHub Actions 自动化打包免签 IPA
 
-### 1. 翻页与分段阅读逻辑
-- 阅读器采用分层架构：底层为正文排版容器，上层为透明手势热区（Gesture Layer）。
-- 左右边缘区域（各占屏幕宽度的 25%）响应上一页/下一页操作，中间 50% 区域响应沉浸式控制栏的淡入淡出。
-- 支持 DragGesture 水平拖拽，结合 `.transition(.opacity)` 模拟书页切换。
-
-### 2. 进度持久化与目标时间统计
-- 进入阅读器时记录开始时间戳；退出或页面跳转时计算阅读增量分钟数。
-- 增量实时累加至 `ReadingGoal.todayMinutes`，驱动主界面的环形目标图动态闭合。
-- `currentPage` 自动反查对应章节目录位置，保持页码、章节与总进度三者一致。
-
-### 3. 书库分类筛选与响应式动态排序
-- `BooksViewModel` 作为共享 `@StateObject`，通过 `@Published` 暴露 `filteredLibraryBooks` 计算属性。
-- 采用管道组合模式（Category Filter -> Keyword Search -> Sort Selector），任何一维条件改变均触发 SwiftUI 局部差量重绘。
-
----
-
-## 🚀 自动化构建与免签名 IPA 打包 (GitHub Actions)
-
-仓库已集成 `.github/workflows/build-ipa.yml`：
-1. 在 macOS Runner 上通过 `xcodebuild` 进行 Release 编译归档，传入：
-   ```bash
-   CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
-   ```
-2. 提取编译后的 `AppleBooksClone.app` 目录至 `Payload/` 结构下。
-3. 压缩生成免签名 `AppleBooksClone.ipa` 文件。
-4. 自动上传为 GitHub Actions 构建产物（Artifacts）。
-
-### 后续企业证书重签名方法
-下载 GitHub Actions 生成的 `AppleBooksClone.ipa` 后，可使用常用重签名工具（如 `iOS App Signer`、`zsign` 或 `codesign` 命令行）直接注入企业证书与 MobileProvision 描述文件：
-
-```bash
-# 示例：使用 zsign 对免签 ipa 进行企业签名
-zsign -k enterprise.p12 -p 证书密码 -m embedded.mobileprovision -o Signed_AppleBooks.ipa AppleBooksClone.ipa
-```
+每次推送到 `main` 或 `master` 分支，GitHub Actions（`macos-14` Apple Silicon Runner）均会自动执行：
+1. `xcodebuild` 编译 Release 归档（禁用 Code Signing：`CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO`）；
+2. 提取 `AppleBooksClone.app` 到 `Payload/` 目录下；
+3. 打包生成 `AppleBooksClone.ipa` 并上传至 Artifacts 供直接下载；
+4. 用户下载后可直接使用企业证书（如 `zsign` 或 `iOS App Signer`）进行自签名。
