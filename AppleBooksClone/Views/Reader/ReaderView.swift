@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - 沉浸式液态玻璃阅读器 (WWDC25 Native Liquid Glass Reader View)
+
 public struct ReaderView: View {
     public let book: Book
     @ObservedObject public var viewModel: BooksViewModel
@@ -51,11 +53,11 @@ public struct ReaderView: View {
 
     public var body: some View {
         ZStack {
-            // 背景阅读主题底色
+            // 背景底色
             selectedTheme.backgroundColor
                 .ignoresSafeArea()
 
-            // 亮度微调遮罩
+            // 亮度微调滤镜
             if brightness < 1.0 {
                 Color.black.opacity(1.0 - brightness)
                     .ignoresSafeArea()
@@ -125,112 +127,116 @@ public struct ReaderView: View {
                 )
             }
 
-            // 右侧边缘垂直液态玻璃进度滑槽 (对应视频 frame_08, 09)
-            if isChromeVisible {
-                HStack {
-                    Spacer()
-                    VerticalPageScrubber(currentPage: $currentPage, totalPages: book.totalPages)
-                        .padding(.trailing, 10)
-                        .transition(.opacity)
-                }
-            }
-
-            // 顶部悬浮液态玻璃控件 (对应视频 frame_08, 10)
-            if isChromeVisible {
-                VStack {
+            GlassEffectContainer {
+                // 右侧边缘垂直液态玻璃进度滑槽 (对应视频 frame_08, 09)
+                if isChromeVisible {
                     HStack {
                         Spacer()
-
-                        // 顶部居中：本章剩余页码液态玻璃胶囊徽标
-                        Text(remainingPagesInChapter == 0 ? "本章最后一页" : "本章还剩 \(remainingPagesInChapter) 页")
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(.white.opacity(0.85))
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 6)
-                            .liquidGlassPill(cornerRadius: 16, specularOpacity: 0.35)
-
-                        Spacer()
-
-                        // 右上角：圆形液态玻璃关闭按钮 (X)
-                        Button(action: {
-                            viewModel.updateProgress(for: book.id, toPage: currentPage)
-                            dismiss()
-                        }) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 15, weight: .bold))
-                                .foregroundColor(.white)
-                                .liquidGlassCircle(size: 38, specularOpacity: 0.5)
-                        }
-                        .buttonStyle(.liquidSpring)
+                        VerticalPageScrubber(currentPage: $currentPage, totalPages: book.totalPages)
+                            .padding(.trailing, 10)
+                            .transition(.opacity)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 14)
-
-                    Spacer()
                 }
-                .transition(.move(edge: .top).combined(with: .opacity))
-            }
 
-            // 底部悬浮液态玻璃控件 (对应视频 frame_08, 09, 10)
-            if isChromeVisible {
-                VStack {
-                    Spacer()
-
-                    // 右下角展开的液态玻璃阅读菜单面板
-                    if showReaderMenu {
+                // 顶部悬浮液态玻璃控件 (对应视频 frame_08, 10)
+                if isChromeVisible {
+                    VStack {
                         HStack {
                             Spacer()
-                            LiquidGlassReaderMenu(
-                                isPresented: $showReaderMenu,
-                                onOpenTOC: { showTOCSheet = true },
-                                onOpenSearch: { showSearchSheet = true },
-                                onOpenSettings: { showSettingsSheet = true },
-                                onShare: {},
-                                onToggleLock: { isOrientationLocked.toggle() },
-                                onToggleMode: { isScrollMode.toggle() },
-                                onToggleBookmark: { isBookmarked.toggle() },
-                                isBookmarked: isBookmarked
-                            )
-                            .padding(.trailing, 20)
-                            .padding(.bottom, 60)
-                            .transition(.asymmetric(
-                                insertion: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity),
-                                removal: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity)
-                            ))
-                        }
-                    }
 
-                    // 底部常驻栏：页码胶囊 + 右下角悬浮圆形菜单按钮
-                    HStack(alignment: .center) {
-                        Spacer()
+                            // 顶部居中：本章剩余页码液态玻璃胶囊徽标
+                            Text(remainingPagesInChapter == 0 ? "本章最后一页" : "本章还剩 \(remainingPagesInChapter) 页")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(.primary)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 7)
+                                .glassEffect(.regular.interactive(), in: Capsule(style: .continuous))
 
-                        // 底部居中：页码进度液态玻璃胶囊 (例: 16/255 页)
-                        Text("\(currentPage)/\(book.totalPages) 页")
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
-                            .foregroundColor(.white.opacity(0.85))
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 6)
-                            .liquidGlassPill(cornerRadius: 16, specularOpacity: 0.35)
+                            Spacer()
 
-                        Spacer()
-
-                        // 右下角：圆形液态玻璃菜单触发按钮
-                        Button(action: {
-                            withAnimation(.spring(response: 0.36, dampingFraction: 0.74)) {
-                                showReaderMenu.toggle()
+                            // 右上角：圆形液态玻璃关闭按钮 (X)
+                            Button(action: {
+                                viewModel.updateProgress(for: book.id, toPage: currentPage)
+                                dismiss()
+                            }) {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 38, height: 38)
+                                    .glassEffect(.regular.interactive(), in: Circle())
                             }
-                        }) {
-                            Image(systemName: "line.3.horizontal")
-                                .font(.system(size: 17, weight: .bold))
-                                .foregroundColor(.white)
-                                .liquidGlassCircle(size: 42, specularOpacity: 0.5)
+                            .buttonStyle(.glass)
                         }
-                        .buttonStyle(.liquidSpring)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 14)
+
+                        Spacer()
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 22)
+                    .transition(.move(edge: .top).combined(with: .opacity))
                 }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+
+                // 底部悬浮液态玻璃控件 (对应视频 frame_08, 09, 10)
+                if isChromeVisible {
+                    VStack {
+                        Spacer()
+
+                        // 右下角展开的液态玻璃阅读菜单面板
+                        if showReaderMenu {
+                            HStack {
+                                Spacer()
+                                LiquidGlassReaderMenu(
+                                    isPresented: $showReaderMenu,
+                                    onOpenTOC: { showTOCSheet = true },
+                                    onOpenSearch: { showSearchSheet = true },
+                                    onOpenSettings: { showSettingsSheet = true },
+                                    onShare: {},
+                                    onToggleLock: { isOrientationLocked.toggle() },
+                                    onToggleMode: { isScrollMode.toggle() },
+                                    onToggleBookmark: { isBookmarked.toggle() },
+                                    isBookmarked: isBookmarked
+                                )
+                                .padding(.trailing, 20)
+                                .padding(.bottom, 62)
+                                .transition(.asymmetric(
+                                    insertion: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity),
+                                    removal: .scale(scale: 0.85, anchor: .bottomTrailing).combined(with: .opacity)
+                                ))
+                            }
+                        }
+
+                        // 底部常驻栏：页码胶囊 + 右下角悬浮圆形菜单按钮
+                        HStack(alignment: .center) {
+                            Spacer()
+
+                            // 底部居中：页码进度液态玻璃胶囊 (例: 16/255 页)
+                            Text("\(currentPage)/\(book.totalPages) 页")
+                                .font(.system(size: 13, weight: .medium, design: .rounded))
+                                .foregroundColor(.primary)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 7)
+                                .glassEffect(.regular.interactive(), in: Capsule(style: .continuous))
+
+                            Spacer()
+
+                            // 右下角：圆形液态玻璃菜单触发按钮
+                            Button(action: {
+                                withAnimation(.spring(response: 0.36, dampingFraction: 0.74)) {
+                                    showReaderMenu.toggle()
+                                }
+                            }) {
+                                Image(systemName: "line.3.horizontal")
+                                    .font(.system(size: 17, weight: .bold))
+                                    .foregroundColor(.primary)
+                                    .frame(width: 42, height: 42)
+                                    .glassEffect(.regular.interactive(), in: Circle())
+                            }
+                            .buttonStyle(.glass)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 22)
+                    }
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
             }
         }
         .statusBarHidden(!isChromeVisible)

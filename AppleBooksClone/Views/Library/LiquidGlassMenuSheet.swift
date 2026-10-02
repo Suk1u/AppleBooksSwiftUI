@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - 悬浮液态玻璃弹出菜单组件 (WWDC25 Native Liquid Glass Sheet)
+
 public struct LiquidGlassMenuSheet: View {
     @Binding public var isPresented: Bool
     @Binding public var viewMode: ViewMode
@@ -8,179 +10,159 @@ public struct LiquidGlassMenuSheet: View {
     public var onRemoveDownloads: () -> Void
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // 选择
-            Button(action: {
-                isPresented = false
-                onSelectMode()
-            }) {
-                HStack(spacing: 14) {
-                    Image(systemName: "checkmark.circle")
-                        .font(.system(size: 19, weight: .regular))
-                    Text("选择")
-                        .font(.system(size: 17, weight: .regular))
-                    Spacer()
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .frame(height: 50)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-
-            Divider()
-                .background(Color.white.opacity(0.12))
-                .padding(.horizontal, 16)
-
-            // 显示视图模式：网格
-            Button(action: {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                    viewMode = .grid
-                }
-                isPresented = false
-            }) {
-                HStack(spacing: 14) {
-                    if viewMode == .grid {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 15, weight: .bold))
-                            .frame(width: 16)
-                    } else {
-                        Spacer().frame(width: 16)
+        GlassEffectContainer {
+            VStack(alignment: .leading, spacing: 0) {
+                // 选择功能项
+                Button(action: {
+                    isPresented = false
+                    onSelectMode()
+                }) {
+                    HStack(spacing: 14) {
+                        Image(systemName: "checkmark.circle")
+                            .font(.system(size: 18))
+                        Text("选择")
+                            .font(.system(size: 16, weight: .regular))
+                        Spacer()
                     }
-
-                    Image(systemName: "square.grid.2x2")
-                        .font(.system(size: 19, weight: .regular))
-                    Text("网格")
-                        .font(.system(size: 17, weight: .regular))
-                    Spacer()
+                    .foregroundColor(.primary)
+                    .padding(.horizontal, 20)
+                    .frame(height: 48)
+                    .contentShape(Rectangle())
                 }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .frame(height: 50)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
+                .buttonStyle(.glass)
 
-            // 显示视图模式：列表
-            Button(action: {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                    viewMode = .list
-                }
-                isPresented = false
-            }) {
-                HStack(spacing: 14) {
-                    if viewMode == .list {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 15, weight: .bold))
-                            .frame(width: 16)
-                    } else {
-                        Spacer().frame(width: 16)
-                    }
+                Divider()
+                    .padding(.horizontal, 16)
 
-                    Image(systemName: "list.bullet")
-                        .font(.system(size: 19, weight: .regular))
-                    Text("列表")
-                        .font(.system(size: 17, weight: .regular))
-                    Spacer()
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .frame(height: 50)
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-
-            Divider()
-                .background(Color.white.opacity(0.12))
-                .padding(.horizontal, 16)
-
-            // 排序方式 Section
-            Text("排序方式...")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.white.opacity(0.45))
-                .padding(.horizontal, 20)
-                .padding(.top, 14)
-                .padding(.bottom, 6)
-
-            ForEach(SortOption.allCases) { sort in
+                // 视图模式：网格
                 Button(action: {
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                        selectedSort = sort
+                        viewMode = .grid
                     }
                     isPresented = false
                 }) {
                     HStack(spacing: 14) {
-                        if selectedSort == sort {
+                        if viewMode == .grid {
                             Image(systemName: "checkmark")
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.system(size: 14, weight: .bold))
                                 .frame(width: 16)
                         } else {
                             Spacer().frame(width: 16)
                         }
 
-                        Text(sort.rawValue)
-                            .font(.system(size: 17, weight: .regular))
+                        Image(systemName: "square.grid.2x2")
+                            .font(.system(size: 18))
+                        Text("网格")
+                            .font(.system(size: 16, weight: .regular))
                         Spacer()
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                     .padding(.horizontal, 20)
-                    .frame(height: 44)
+                    .frame(height: 48)
                     .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
-            }
+                .buttonStyle(.glass)
 
-            Divider()
-                .background(Color.white.opacity(0.12))
-                .padding(.horizontal, 16)
-                .padding(.top, 6)
+                // 视图模式：列表
+                Button(action: {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
+                        viewMode = .list
+                    }
+                    isPresented = false
+                }) {
+                    HStack(spacing: 14) {
+                        if viewMode == .list {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 14, weight: .bold))
+                                .frame(width: 16)
+                        } else {
+                            Spacer().frame(width: 16)
+                        }
 
-            // 移除下载
-            Button(action: {
-                isPresented = false
-                onRemoveDownloads()
-            }) {
-                HStack(spacing: 14) {
-                    Image(systemName: "trash")
-                        .font(.system(size: 18, weight: .regular))
-                    Text("移除下载")
-                        .font(.system(size: 17, weight: .regular))
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.white.opacity(0.4))
+                        Image(systemName: "list.bullet")
+                            .font(.system(size: 18))
+                        Text("列表")
+                            .font(.system(size: 16, weight: .regular))
+                        Spacer()
+                    }
+                    .foregroundColor(.primary)
+                    .padding(.horizontal, 20)
+                    .frame(height: 48)
+                    .contentShape(Rectangle())
                 }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .frame(height: 52)
-                .contentShape(Rectangle())
+                .buttonStyle(.glass)
+
+                Divider()
+                    .padding(.horizontal, 16)
+
+                // 排序规则标题
+                Text("排序方式...")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 12)
+                    .padding(.bottom, 4)
+
+                ForEach(SortOption.allCases) { sort in
+                    Button(action: {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
+                            selectedSort = sort
+                        }
+                        isPresented = false
+                    }) {
+                        HStack(spacing: 14) {
+                            if selectedSort == sort {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .frame(width: 16)
+                            } else {
+                                Spacer().frame(width: 16)
+                            }
+
+                            Text(sort.rawValue)
+                                .font(.system(size: 16, weight: .regular))
+                            Spacer()
+                        }
+                        .foregroundColor(.primary)
+                        .padding(.horizontal, 20)
+                        .frame(height: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.glass)
+                }
+
+                Divider()
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+
+                // 移除下载
+                Button(action: {
+                    isPresented = false
+                    onRemoveDownloads()
+                }) {
+                    HStack(spacing: 14) {
+                        Image(systemName: "trash")
+                            .font(.system(size: 17))
+                        Text("移除下载")
+                            .font(.system(size: 16, weight: .regular))
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(.secondary)
+                    }
+                    .foregroundColor(.primary)
+                    .padding(.horizontal, 20)
+                    .frame(height: 48)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.glass)
             }
-            .buttonStyle(.plain)
+            .padding(.vertical, 8)
+            .frame(width: 250)
+            .glassEffect(
+                .regular.interactive(),
+                in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+            )
         }
-        .padding(.vertical, 8)
-        .frame(width: 250)
-        .background(
-            ZStack {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(Color(white: 0.16).opacity(0.85))
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .strokeBorder(
-                        LinearGradient(
-                            stops: [
-                                .init(color: Color.white.opacity(0.45), location: 0.0),
-                                .init(color: Color.white.opacity(0.12), location: 0.4),
-                                .init(color: Color.white.opacity(0.25), location: 1.0)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 1.0
-                    )
-            }
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .shadow(color: Color.black.opacity(0.45), radius: 25, x: 0, y: 14)
     }
 }

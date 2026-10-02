@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - 主导航视图 (WWDC25 Native Liquid Glass Main Tab View)
+
 public struct MainTabView: View {
     @StateObject private var viewModel = BooksViewModel()
     @State private var selectedTab: AppTab = .library
@@ -8,29 +10,31 @@ public struct MainTabView: View {
 
     public var body: some View {
         ZStack(alignment: .bottom) {
-            Color.black.ignoresSafeArea()
+            // 底层动态流体渐变背景（保持内容层不被玻璃化）
+            DynamicGradientBackground()
 
-            // 页面内容
-            Group {
-                switch selectedTab {
-                case .home:
-                    ReadingNowView(viewModel: viewModel)
-                case .library:
-                    LibraryView(viewModel: viewModel)
-                case .store:
-                    storePlaceholderView
-                case .audiobooks:
-                    audiobooksPlaceholderView
-                case .search:
-                    searchPlaceholderView
+            GlassEffectContainer {
+                // 页面主体内容
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        ReadingNowView(viewModel: viewModel)
+                    case .library:
+                        LibraryView(viewModel: viewModel)
+                    case .store:
+                        storePlaceholderView
+                    case .audiobooks:
+                        audiobooksPlaceholderView
+                    case .search:
+                        searchPlaceholderView
+                    }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            // 悬浮流体液态玻璃导航栏 (对齐视频 frame_01, 04, 06)
-            LiquidGlassTabBar(selectedTab: $selectedTab)
+                // 悬浮流体液态玻璃导航栏 (对齐视频 frame_01, 04, 06)
+                LiquidGlassTabBar(selectedTab: $selectedTab)
+            }
         }
-        .preferredColorScheme(.dark)
         // 书籍详情页 Sheet
         .sheet(item: $viewModel.selectedDetailBook) { book in
             BookDetailView(book: book, viewModel: viewModel)
@@ -42,65 +46,85 @@ public struct MainTabView: View {
     }
 
     private var storePlaceholderView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "bag.fill")
-                .font(.system(size: 48))
-                .foregroundColor(.white.opacity(0.6))
-            Text("探索书店")
-                .font(.system(size: 22, weight: .bold))
-                .foregroundColor(.white)
-            Text("精选畅销好书与新书推荐")
-                .font(.system(size: 14))
-                .foregroundColor(.white.opacity(0.5))
+        VStack(spacing: 20) {
+            Spacer()
+            LiquidGlassCard(cornerRadius: 24) {
+                VStack(spacing: 14) {
+                    Image(systemName: "bag.fill")
+                        .font(.system(size: 48))
+                        .foregroundColor(.primary.opacity(0.8))
+                    Text("探索书店")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.primary)
+                    Text("精选畅销好书与新书推荐")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+            }
+            .padding(.horizontal, 24)
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
     }
 
     private var audiobooksPlaceholderView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "headphones")
-                .font(.system(size: 48))
-                .foregroundColor(.white.opacity(0.6))
-            Text("有声书")
-                .font(.system(size: 22, weight: .bold))
-                .foregroundColor(.white)
-            Text("沉浸式专业声优配音听书体验")
-                .font(.system(size: 14))
-                .foregroundColor(.white.opacity(0.5))
+        VStack(spacing: 20) {
+            Spacer()
+            LiquidGlassCard(cornerRadius: 24) {
+                VStack(spacing: 14) {
+                    Image(systemName: "headphones")
+                        .font(.system(size: 48))
+                        .foregroundColor(.primary.opacity(0.8))
+                    Text("有声书")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.primary)
+                    Text("沉浸式专业声优配音听书体验")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
+            }
+            .padding(.horizontal, 24)
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
     }
 
     private var searchPlaceholderView: some View {
         VStack(spacing: 20) {
             HStack(spacing: 10) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(.secondary)
                 TextField("搜索图书、作者或书名", text: $viewModel.searchText)
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .liquidGlassCard(cornerRadius: 16, specularOpacity: 0.35)
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .padding(.horizontal, 20)
             .padding(.top, 24)
 
             Spacer()
 
-            VStack(spacing: 12) {
-                Image(systemName: "books.vertical")
-                    .font(.system(size: 44))
-                    .foregroundColor(.white.opacity(0.4))
-                Text("搜索你的全部图书")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.white.opacity(0.6))
+            LiquidGlassCard(cornerRadius: 22) {
+                VStack(spacing: 12) {
+                    Image(systemName: "books.vertical")
+                        .font(.system(size: 44))
+                        .foregroundColor(.secondary)
+                    Text("搜索你的全部图书")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.primary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
             }
+            .padding(.horizontal, 24)
 
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black)
     }
 }
